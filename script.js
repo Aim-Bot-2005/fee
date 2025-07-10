@@ -1,88 +1,84 @@
-// Futuristic Neon Particle Background
+window.addEventListener('DOMContentLoaded', function() {
+// Futuristic Constellation/Network Background
 const canvas = document.createElement('canvas');
 canvas.id = 'bg-canvas';
 document.getElementById('bg-animation').appendChild(canvas);
 const ctx = canvas.getContext('2d');
-let particles = [];
+
+let nodes = [];
+const NODE_COUNT = 60;
+const MAX_DIST = 140;
+const COLORS = ['#00fff7', '#00aaff', '#ffffff'];
+
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = document.querySelector('.home-section').offsetHeight;
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
-function createParticles() {
-  particles = [];
-  for (let i = 0; i < 80; i++) {
-    particles.push({
+
+function createNodes() {
+  nodes = [];
+  for (let i = 0; i < NODE_COUNT; i++) {
+    nodes.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      r: Math.random() * 2 + 1,
-      dx: (Math.random() - 0.5) * 1.2,
-      dy: (Math.random() - 0.5) * 1.2,
-      color: `hsl(${Math.random()*360},100%,60%)`
+      r: Math.random() * 2.2 + 1.2,
+      dx: (Math.random() - 0.5) * 0.5,
+      dy: (Math.random() - 0.5) * 0.5,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)]
     });
   }
 }
-createParticles();
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (let p of particles) {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-    ctx.fillStyle = p.color;
-    ctx.shadowColor = p.color;
-    ctx.shadowBlur = 16;
-    ctx.fill();
-    p.x += p.dx;
-    p.y += p.dy;
-    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-  }
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
+createNodes();
 
-// Interactive 3D Model (Three.js)
-const modelDiv = document.getElementById('3d-model');
-const width = modelDiv.offsetWidth;
-const height = modelDiv.offsetHeight;
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(width, height);
-modelDiv.appendChild(renderer.domElement);
-// Neon Torus Knot
-const geometry = new THREE.TorusKnotGeometry(1, 0.3, 128, 16);
-const material = new THREE.MeshPhysicalMaterial({
-  color: 0x00ffe7,
-  emissive: 0x00ffe7,
-  metalness: 1,
-  roughness: 0.2,
-  clearcoat: 1,
-  clearcoatRoughness: 0.1,
-  transmission: 0.7,
-  thickness: 0.5
-});
-const torusKnot = new THREE.Mesh(geometry, material);
-scene.add(torusKnot);
-const light = new THREE.PointLight(0xff00cc, 2, 100);
-light.position.set(5, 5, 5);
-scene.add(light);
-camera.position.z = 4;
-function animate3D() {
-  requestAnimationFrame(animate3D);
-  torusKnot.rotation.x += 0.01;
-  torusKnot.rotation.y += 0.012;
-  renderer.render(scene, camera);
+function drawConstellation() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Draw lines between close nodes
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j];
+      const dist = Math.hypot(a.x - b.x, a.y - b.y);
+      if (dist < MAX_DIST) {
+        const alpha = 1 - dist / MAX_DIST;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `rgba(0,255,247,${alpha * 0.35})`;
+        ctx.shadowColor = '#00fff7';
+        ctx.shadowBlur = 8;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+  // Draw nodes
+  for (let node of nodes) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, node.r, 0, 2 * Math.PI);
+    ctx.fillStyle = node.color;
+    ctx.shadowColor = node.color;
+    ctx.shadowBlur = 18;
+    ctx.globalAlpha = 0.85;
+    ctx.fill();
+    ctx.restore();
+  }
 }
-animate3D();
-window.addEventListener('resize', () => {
-  const w = modelDiv.offsetWidth;
-  const h = modelDiv.offsetHeight;
-  renderer.setSize(w, h);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-});
+
+function animateConstellation() {
+  for (let node of nodes) {
+    node.x += node.dx;
+    node.y += node.dy;
+    if (node.x < 0 || node.x > canvas.width) node.dx *= -1;
+    if (node.y < 0 || node.y > canvas.height) node.dy *= -1;
+  }
+  drawConstellation();
+  requestAnimationFrame(animateConstellation);
+}
+animateConstellation();
 
 // Services Cards Data
 const services = [
@@ -122,4 +118,5 @@ projects.forEach(p => {
 document.getElementById('contact-form').addEventListener('submit', function(e) {
   e.preventDefault();
   alert('Form submission will be connected to Google Forms soon!');
+});
 }); 
