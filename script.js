@@ -87,36 +87,171 @@ const services = [
   { icon: '💻', title: 'Web Development', desc: 'Next-gen websites, apps, and digital experiences.' },
   { icon: '🎨', title: 'UI/UX', desc: 'Immersive, user-centric interface and experience design.' },
   { icon: '🧊', title: '3D Modeling', desc: 'Hyper-realistic 3D models for any purpose.' },
-  { icon: '🚀', title: 'Other Projects', desc: 'Custom futuristic solutions for unique needs.' }
+  { icon: '🚀', title: 'Other Projects', desc: 'Custom futuristic solutions for unique needs.' },
+  { icon: '🖼️', title: 'Artwork', desc: 'Futuristic digital art, illustrations, and concept visuals.' }
 ];
 const servicesContainer = document.querySelector('.services-cards');
 services.forEach(s => {
   const card = document.createElement('div');
   card.className = 'futuristic-card';
-  card.innerHTML = `<div class="icon">${s.icon}</div><h3>${s.title}</h3><p>${s.desc}</p>`;
+  card.innerHTML = `<div class=\"icon\">${s.icon}</div><h3>${s.title}</h3><p>${s.desc}</p>`;
   servicesContainer.appendChild(card);
 });
 
 // Projects Cards Data (placeholders)
 const projects = [
-  { icon: '🎬', title: 'Animated Ad', desc: 'A mind-bending animated ad for a tech startup.' },
-  { icon: '✂️', title: 'Music Video Edit', desc: 'A music video with cyberpunk VFX.' },
-  { icon: '💻', title: 'Portfolio Website', desc: 'A glassmorphic, interactive portfolio.' },
-  { icon: '🎨', title: 'App UI/UX', desc: 'A mobile app with holographic UI.' },
-  { icon: '🧊', title: '3D Product Model', desc: 'A photorealistic 3D model for AR.' },
-  { icon: '🚀', title: 'Custom Project', desc: 'A secret project for a futuristic brand.' }
+  { icon: '🎬', img: 'assets/sample-image.jpg' },
+  { icon: '💻', video: 'assets/sample-video.mp4' },
+  { icon: '🎬' },
+  { icon: '🎬' },
+  { icon: '✂️' },
+  { icon: '✂️' },
+  { icon: '💻' },
+  { icon: '💻' },
+  { icon: '🎨' },
+  { icon: '🎨' },
+  { icon: '🧊' },
+  { icon: '🧊' },
+  { icon: '🚀' },
+  { icon: '🖼️' },
+  { icon: '🖼️' }
 ];
-const projectsContainer = document.querySelector('.projects-cards');
-projects.forEach(p => {
+
+// Shuffle projects array for random order
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+shuffleArray(projects);
+
+const projectsCarousel = document.querySelector('.projects-carousel');
+
+// Track
+const track = document.createElement('div');
+track.className = 'projects-carousel-track';
+
+// Infinite loop: clone first and last N cards
+const VISIBLE_CARDS = 3; // Number of cards visible at once (approx)
+const total = projects.length;
+
+function createCard(p) {
+  let cardContent = '';
+  let href = '';
+  if (p.img) {
+    cardContent = `<img src="${p.img}" alt="Project Image" class="project-media" /><div class="icon">${p.icon}</div>`;
+    href = p.img;
+  } else if (p.video) {
+    cardContent = `<video src="${p.video}" class="project-media" autoplay loop muted playsinline></video><div class="icon">${p.icon}</div>`;
+    href = p.video;
+  } else {
+    cardContent = `<div class="icon">${p.icon}</div>`;
+  }
   const card = document.createElement('div');
   card.className = 'futuristic-card';
-  card.innerHTML = `<div class="icon">${p.icon}</div><h3>${p.title}</h3><p>${p.desc}</p>`;
-  projectsContainer.appendChild(card);
+  if (href) {
+    const link = document.createElement('a');
+    link.href = href;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.innerHTML = cardContent;
+    card.appendChild(link);
+  } else {
+    card.innerHTML = cardContent;
+  }
+  return card;
+}
+
+// Clone last N cards to the start
+for (let i = total - VISIBLE_CARDS; i < total; i++) {
+  track.appendChild(createCard(projects[i]));
+}
+// Add all real cards
+projects.forEach(p => {
+  track.appendChild(createCard(p));
+});
+// Clone first N cards to the end
+for (let i = 0; i < VISIBLE_CARDS; i++) {
+  track.appendChild(createCard(projects[i]));
+}
+projectsCarousel.appendChild(track);
+
+// Set initial scroll position to the first real card
+function getCardWidth() {
+  const card = track.querySelector('.futuristic-card');
+  return card ? card.offsetWidth + 32 : 320; // 32px gap
+}
+function setInitialScroll() {
+  track.scrollLeft = getCardWidth() * VISIBLE_CARDS;
+}
+setTimeout(setInitialScroll, 50);
+
+// Arrows
+const left = document.createElement('button');
+left.className = 'carousel-arrow left';
+left.innerHTML = '&#8592;';
+left.onclick = () => {
+  track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+};
+const right = document.createElement('button');
+right.className = 'carousel-arrow right';
+right.innerHTML = '&#8594;';
+right.onclick = () => {
+  track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+};
+projectsCarousel.appendChild(left);
+projectsCarousel.appendChild(right);
+
+// Infinite loop scroll logic
+track.addEventListener('scroll', () => {
+  const cardW = getCardWidth();
+  if (track.scrollLeft <= cardW * 0.5) {
+    // Jump to end
+    track.scrollLeft = cardW * (total + VISIBLE_CARDS - 0.5);
+  } else if (track.scrollLeft >= cardW * (total + VISIBLE_CARDS - 0.5)) {
+    // Jump to start
+    track.scrollLeft = cardW * VISIBLE_CARDS + 1;
+  }
+});
+window.addEventListener('resize', setInitialScroll);
+
+// Touch swipe support for carousel
+let startX = 0;
+let scrollStart = 0;
+let isTouching = false;
+track.addEventListener('touchstart', (e) => {
+  isTouching = true;
+  startX = e.touches[0].clientX;
+  scrollStart = track.scrollLeft;
+}, { passive: true });
+track.addEventListener('touchmove', (e) => {
+  if (!isTouching) return;
+  const dx = e.touches[0].clientX - startX;
+  track.scrollLeft = scrollStart - dx;
+}, { passive: true });
+track.addEventListener('touchend', () => {
+  isTouching = false;
 });
 
 // Contact Form (placeholder for Google Form integration)
 document.getElementById('contact-form').addEventListener('submit', function(e) {
   e.preventDefault();
   alert('Form submission will be connected to Google Forms soon!');
+});
+
+// Hamburger menu logic
+const hamburger = document.getElementById('hamburger-menu');
+const navOverlay = document.getElementById('nav-menu-overlay');
+hamburger.addEventListener('click', () => {
+  navOverlay.classList.toggle('active');
+});
+navOverlay.addEventListener('click', (e) => {
+  if (e.target === navOverlay) navOverlay.classList.remove('active');
+});
+navOverlay.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navOverlay.classList.remove('active');
+  });
 });
 }); 
