@@ -100,25 +100,13 @@ services.forEach(s => {
 
 // Projects Cards Data (placeholders)
 const projects = [
-  { icon: '🎬', img: 'assets/sample-image.jpg' },
-  { icon: '💻', video: 'assets/sample-video.mp4' },
-  { icon: '🖼️', img: 'assets/artworks/1751730728330.png' },
-  { icon: '🖼️', img: 'assets/artworks/1751730728355.png' },
-  { icon: '🖼️', img: 'assets/artworks/1751730728374.png' },
-  { icon: '🖼️', img: 'assets/artworks/1751730728389.png' },
-  { icon: '🎬' },
-  { icon: '🎬' },
-  { icon: '✂️' },
-  { icon: '✂️' },
-  { icon: '💻' },
-  { icon: '💻' },
-  { icon: '🎨' },
-  { icon: '🎨' },
-  { icon: '🧊' },
-  { icon: '🧊' },
-  { icon: '🚀' },
-  { icon: '🖼️' },
-  { icon: '🖼️' }
+  { img: 'assets/sample-image.jpg' },
+  { video: 'assets/sample-video.mp4' },
+  { img: 'assets/artworks/1751730728330.png' },
+  { img: 'assets/artworks/1751730728355.png' },
+  { img: 'assets/artworks/1751730728374.png' },
+  { img: 'assets/artworks/1751730728389.png' },
+  { video: 'assets/annimations/final2.mp4' }
 ];
 
 // Shuffle projects array for random order
@@ -141,16 +129,14 @@ const VISIBLE_CARDS = 3; // Number of cards visible at once (approx)
 const total = projects.length;
 
 function createCard(p) {
-  let cardContent = '';
+  let media = '';
   let href = '';
   if (p.img) {
-    cardContent = `<img src="${p.img}" alt="Project Image" class="project-media" /><div class="icon">${p.icon}</div>`;
+    media = `<div class='media-container'><img src="${p.img}" alt="Project Image" class="project-media" /></div>`;
     href = p.img;
   } else if (p.video) {
-    cardContent = `<video src="${p.video}" class="project-media" autoplay loop muted playsinline></video><div class="icon">${p.icon}</div>`;
+    media = `<div class='media-container'><video src="${p.video}" class="project-media" autoplay loop muted playsinline></video></div>`;
     href = p.video;
-  } else {
-    cardContent = `<div class="icon">${p.icon}</div>`;
   }
   const card = document.createElement('div');
   card.className = 'futuristic-card';
@@ -159,10 +145,10 @@ function createCard(p) {
     link.href = href;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.innerHTML = cardContent;
+    link.innerHTML = `${media}`;
     card.appendChild(link);
   } else {
-    card.innerHTML = cardContent;
+    card.innerHTML = `${media}`;
   }
   return card;
 }
