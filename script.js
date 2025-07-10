@@ -100,8 +100,6 @@ services.forEach(s => {
 
 // Projects Cards Data (placeholders)
 const projects = [
-  { img: 'assets/sample-image.jpg' },
-  { video: 'assets/sample-video.mp4' },
   { img: 'assets/artworks/1751730728330.png' },
   { img: 'assets/artworks/1751730728355.png' },
   { img: 'assets/artworks/1751730728374.png' },
@@ -119,92 +117,116 @@ function shuffleArray(array) {
 shuffleArray(projects);
 
 const projectsCarousel = document.querySelector('.projects-carousel');
+const isMobile = window.innerWidth <= 700;
 
-// Track
 const track = document.createElement('div');
 track.className = 'projects-carousel-track';
 
-// Infinite loop: clone first and last N cards
-const VISIBLE_CARDS = 3; // Number of cards visible at once (approx)
-const total = projects.length;
-
-function createCard(p) {
-  let media = '';
-  let href = '';
-  if (p.img) {
-    media = `<div class='media-container'><img src="${p.img}" alt="Project Image" class="project-media" /></div>`;
-    href = p.img;
-  } else if (p.video) {
-    media = `<div class='media-container'><video src="${p.video}" class="project-media" autoplay loop muted playsinline></video></div>`;
-    href = p.video;
+if (!isMobile) {
+  // Infinite loop: clone first and last N cards
+  const VISIBLE_CARDS = 3; // Number of cards visible at once (approx)
+  const total = projects.length;
+  function createCard(p) {
+    let media = '';
+    let href = '';
+    if (p.img) {
+      media = `<div class='media-container'><img src="${p.img}" alt="Project Image" class="project-media" /></div>`;
+      href = p.img;
+    } else if (p.video) {
+      media = `<div class='media-container'><video src="${p.video}" class="project-media" autoplay loop muted playsinline></video></div>`;
+      href = p.video;
+    }
+    const card = document.createElement('div');
+    card.className = 'futuristic-card';
+    if (href) {
+      const link = document.createElement('a');
+      link.href = href;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.innerHTML = `${media}`;
+      card.appendChild(link);
+    } else {
+      card.innerHTML = `${media}`;
+    }
+    return card;
   }
-  const card = document.createElement('div');
-  card.className = 'futuristic-card';
-  if (href) {
-    const link = document.createElement('a');
-    link.href = href;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    link.innerHTML = `${media}`;
-    card.appendChild(link);
-  } else {
-    card.innerHTML = `${media}`;
+  // Clone last N cards to the start
+  for (let i = total - VISIBLE_CARDS; i < total; i++) {
+    track.appendChild(createCard(projects[i]));
   }
-  return card;
-}
-
-// Clone last N cards to the start
-for (let i = total - VISIBLE_CARDS; i < total; i++) {
-  track.appendChild(createCard(projects[i]));
-}
-// Add all real cards
-projects.forEach(p => {
-  track.appendChild(createCard(p));
-});
-// Clone first N cards to the end
-for (let i = 0; i < VISIBLE_CARDS; i++) {
-  track.appendChild(createCard(projects[i]));
-}
-projectsCarousel.appendChild(track);
-
-// Set initial scroll position to the first real card
-function getCardWidth() {
-  const card = track.querySelector('.futuristic-card');
-  return card ? card.offsetWidth + 32 : 320; // 32px gap
-}
-function setInitialScroll() {
-  track.scrollLeft = getCardWidth() * VISIBLE_CARDS;
-}
-setTimeout(setInitialScroll, 50);
-
-// Arrows
-const left = document.createElement('button');
-left.className = 'carousel-arrow left';
-left.innerHTML = '&#8592;';
-left.onclick = () => {
-  track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
-};
-const right = document.createElement('button');
-right.className = 'carousel-arrow right';
-right.innerHTML = '&#8594;';
-right.onclick = () => {
-  track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
-};
-projectsCarousel.appendChild(left);
-projectsCarousel.appendChild(right);
-
-// Infinite loop scroll logic
-track.addEventListener('scroll', () => {
-  const cardW = getCardWidth();
-  if (track.scrollLeft <= cardW * 0.5) {
-    // Jump to end
-    track.scrollLeft = cardW * (total + VISIBLE_CARDS - 0.5);
-  } else if (track.scrollLeft >= cardW * (total + VISIBLE_CARDS - 0.5)) {
-    // Jump to start
-    track.scrollLeft = cardW * VISIBLE_CARDS + 1;
+  // Add all real cards
+  projects.forEach(p => {
+    track.appendChild(createCard(p));
+  });
+  // Clone first N cards to the end
+  for (let i = 0; i < VISIBLE_CARDS; i++) {
+    track.appendChild(createCard(projects[i]));
   }
-});
-window.addEventListener('resize', setInitialScroll);
+  projectsCarousel.appendChild(track);
+  // Set initial scroll position to the first real card
+  function getCardWidth() {
+    const card = track.querySelector('.futuristic-card');
+    return card ? card.offsetWidth + 32 : 320; // 32px gap
+  }
+  function setInitialScroll() {
+    track.scrollLeft = getCardWidth() * VISIBLE_CARDS;
+  }
+  setTimeout(setInitialScroll, 50);
+  // Arrows
+  const left = document.createElement('button');
+  left.className = 'carousel-arrow left';
+  left.innerHTML = '&#8592;';
+  left.onclick = () => {
+    track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+  };
+  const right = document.createElement('button');
+  right.className = 'carousel-arrow right';
+  right.innerHTML = '&#8594;';
+  right.onclick = () => {
+    track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+  };
+  projectsCarousel.appendChild(left);
+  projectsCarousel.appendChild(right);
+  // Infinite loop scroll logic
+  track.addEventListener('scroll', () => {
+    const cardW = getCardWidth();
+    if (track.scrollLeft <= cardW * 0.5) {
+      // Jump to end
+      track.scrollLeft = cardW * (total + VISIBLE_CARDS - 0.5);
+    } else if (track.scrollLeft >= cardW * (total + VISIBLE_CARDS - 0.5)) {
+      // Jump to start
+      track.scrollLeft = cardW * VISIBLE_CARDS + 1;
+    }
+  });
+  window.addEventListener('resize', setInitialScroll);
+} else {
+  // Mobile: No infinite loop, just render cards in order
+  projects.forEach(p => {
+    let media = '';
+    let href = '';
+    if (p.img) {
+      media = `<div class='media-container'><img src="${p.img}" alt="Project Image" class="project-media" /></div>`;
+      href = p.img;
+    } else if (p.video) {
+      media = `<div class='media-container'><video src="${p.video}" class="project-media" autoplay loop muted playsinline></video></div>`;
+      href = p.video;
+    }
+    const card = document.createElement('div');
+    card.className = 'futuristic-card';
+    if (href) {
+      const link = document.createElement('a');
+      link.href = href;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.innerHTML = `${media}`;
+      card.appendChild(link);
+    } else {
+      card.innerHTML = `${media}`;
+    }
+    track.appendChild(card);
+  });
+  projectsCarousel.appendChild(track);
+}
 
 // Touch swipe support for carousel
 let startX = 0;
