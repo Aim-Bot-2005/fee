@@ -1,19 +1,43 @@
-/* Futuristic Theme Variables */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Exo:wght@600&display=swap');
+
 :root {
-  --primary: #00ffe7;
-  --secondary: #0f0c29;
-  --accent: #ff00cc;
-  --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-  --glass: rgba(255,255,255,0.08);
-  --card-glow: 0 0 24px 4px #00ffe7, 0 0 48px 8px #ff00cc44;
+  --primary: #00fff7;
+  --secondary: #1a0033;
+  --accent: #00aaff;
+  --bg-dark: #0a0618;
+  --bg-gradient: linear-gradient(135deg, #0a0618 0%, #1a0033 100%);
+  --glass: rgba(30, 30, 60, 0.25);
+  --glass-border: rgba(0,255,247,0.25);
+  --card-glow: 0 0 32px 4px #00fff7, 0 0 64px 8px #00aaff44;
+  --holo: linear-gradient(90deg, #00fff7 0%, #00aaff 100%);
 }
 
 body {
   margin: 0;
-  font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+  font-family: 'Orbitron', 'Exo', 'Segoe UI', Arial, sans-serif;
   background: var(--bg-gradient);
   color: #fff;
   overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+#bg-animation, #bg-grid {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#bg-grid {
+  background: repeating-linear-gradient(90deg, rgba(0,255,247,0.05) 0 1px, transparent 1px 80px),
+              repeating-linear-gradient(0deg, rgba(0,170,255,0.05) 0 1px, transparent 1px 80px);
+  animation: gridmove 8s linear infinite;
+}
+@keyframes gridmove {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 80px 80px, 80px 80px; }
 }
 
 .navbar {
@@ -22,42 +46,53 @@ body {
   align-items: center;
   padding: 1.5rem 3rem;
   background: var(--glass);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 2px 24px #00ffe733;
+  border-bottom: 1.5px solid var(--glass-border);
+  backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: 0 2px 32px #00fff733;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 10;
 }
 .logo {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2.2rem;
+  font-family: 'Orbitron', 'Exo', sans-serif;
+  font-weight: 700;
   color: var(--primary);
-  letter-spacing: 2px;
-  text-shadow: 0 0 12px var(--primary);
+  letter-spacing: 3px;
+  text-shadow: 0 0 18px var(--primary), 0 0 4px #fff;
+  background: var(--holo);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 2rem;
+  gap: 2.2rem;
 }
 .nav-links a {
   color: #fff;
   text-decoration: none;
-  font-size: 1.1rem;
-  padding: 0.5rem 1.2rem;
-  border-radius: 30px;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  font-size: 1.15rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 40px;
+  background: rgba(0,0,0,0.12);
+  border: 1.5px solid var(--glass-border);
+  box-shadow: 0 0 12px var(--primary) inset;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, border 0.2s;
+  font-family: 'Exo', 'Orbitron', sans-serif;
 }
 .nav-links a:hover {
-  background: var(--primary);
-  color: #0f0c29;
-  box-shadow: 0 0 16px var(--primary);
+  background: var(--holo);
+  color: #0a0618;
+  box-shadow: 0 0 24px var(--accent);
+  border: 1.5px solid var(--accent);
 }
 
 .section {
-  padding: 6rem 2rem 4rem 2rem;
+  padding: 7rem 2rem 5rem 2rem;
   min-height: 80vh;
   position: relative;
+  z-index: 1;
 }
 
 .home-section {
@@ -72,172 +107,219 @@ body {
 .hero-content {
   z-index: 2;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 .hero-content h1 {
-  font-size: 3.5rem;
+  font-size: 4rem;
+  font-family: 'Orbitron', 'Exo', sans-serif;
   color: var(--primary);
-  text-shadow: 0 0 32px var(--primary), 0 0 8px #fff;
-  letter-spacing: 4px;
+  text-shadow: 0 0 48px var(--primary), 0 0 12px #fff;
+  letter-spacing: 6px;
+  background: var(--holo);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .hero-content p {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   color: #fff;
-  text-shadow: 0 0 8px var(--accent);
-}
-#bg-animation {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 1;
-  pointer-events: none;
+  text-shadow: 0 0 12px var(--accent);
+  font-family: 'Exo', 'Orbitron', sans-serif;
 }
 #3d-model {
-  width: 400px;
-  height: 400px;
+  width: 420px;
+  height: 420px;
   margin: 0 auto;
   z-index: 2;
+  border-radius: 50%;
+  box-shadow: 0 0 64px 8px var(--primary), 0 0 32px 4px var(--accent);
+  background: rgba(0,0,0,0.18);
+  border: 2px solid var(--accent);
 }
 
 .services-section, .projects-section {
   background: var(--glass);
-  border-radius: 32px;
-  box-shadow: 0 0 48px 8px #00ffe733;
-  margin: 2rem auto;
-  max-width: 1200px;
+  border-radius: 36px;
+  box-shadow: 0 0 64px 12px #00fff733, 0 0 32px 4px #00aaff33;
+  margin: 2.5rem auto;
+  max-width: 1300px;
+  border: 1.5px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(180%);
 }
 .services-section h2, .projects-section h2, .contact-section h2 {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2.7rem;
   color: var(--accent);
-  margin-bottom: 2rem;
-  letter-spacing: 2px;
+  margin-bottom: 2.5rem;
+  letter-spacing: 2.5px;
+  font-family: 'Orbitron', 'Exo', sans-serif;
+  text-shadow: 0 0 18px var(--accent);
 }
 .services-cards, .projects-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 2.5rem;
   justify-content: center;
 }
 .futuristic-card {
   background: var(--glass);
-  border: 2px solid var(--primary);
-  border-radius: 24px;
-  box-shadow: var(--card-glow);
-  padding: 2rem 1.5rem;
-  min-width: 260px;
-  max-width: 320px;
+  border: 2.5px solid var(--primary);
+  border-radius: 28px;
+  box-shadow: 0 0 32px 8px #00fff744, 0 0 64px 16px #00aaff22;
+  padding: 2.2rem 1.7rem;
+  min-width: 270px;
+  max-width: 340px;
   color: #fff;
   position: relative;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.25s, box-shadow 0.25s, border 0.25s;
   cursor: pointer;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px) saturate(180%);
+  font-family: 'Exo', 'Orbitron', sans-serif;
+  border-image: var(--holo) 1;
+  border-image-slice: 1;
+  border-width: 2.5px;
+  border-style: solid;
+  animation: holoCardGlow 3s linear infinite alternate;
+}
+@keyframes holoCardGlow {
+  0% { box-shadow: 0 0 32px 8px #00fff744, 0 0 64px 16px #00aaff22; }
+  100% { box-shadow: 0 0 64px 16px #00aaff44, 0 0 32px 8px #00fff722; }
 }
 .futuristic-card:hover {
-  transform: translateY(-10px) scale(1.04) rotate(-1deg);
-  box-shadow: 0 0 64px 16px var(--accent);
+  transform: translateY(-12px) scale(1.06) rotate(-1.5deg);
+  box-shadow: 0 0 96px 24px var(--accent), 0 0 64px 16px var(--primary);
   border-color: var(--accent);
+  border-image: linear-gradient(90deg, #00aaff 0%, #00fff7 100%) 1;
 }
 .futuristic-card .icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 2.8rem;
+  margin-bottom: 1.2rem;
   color: var(--primary);
-  text-shadow: 0 0 16px var(--primary);
+  text-shadow: 0 0 24px var(--primary);
+  filter: drop-shadow(0 0 8px var(--accent));
 }
 .futuristic-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.7rem;
   color: var(--accent);
+  font-family: 'Orbitron', 'Exo', sans-serif;
 }
 .futuristic-card p {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #fff;
-  opacity: 0.85;
+  opacity: 0.88;
 }
 
 .contact-section {
   background: var(--glass);
-  border-radius: 32px;
-  box-shadow: 0 0 48px 8px #ff00cc33;
-  margin: 2rem auto;
-  max-width: 900px;
+  border-radius: 36px;
+  box-shadow: 0 0 64px 12px #00aaff33, 0 0 32px 4px #00fff733;
+  margin: 2.5rem auto;
+  max-width: 950px;
   text-align: center;
+  border: 1.5px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(180%);
 }
 .contact-links {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
 }
 .contact-btn {
   display: inline-block;
-  padding: 0.8rem 2rem;
-  border-radius: 30px;
-  background: var(--primary);
-  color: #0f0c29;
+  padding: 1rem 2.5rem;
+  border-radius: 40px;
+  background: var(--holo);
+  color: #0a0618;
   font-weight: bold;
   text-decoration: none;
-  font-size: 1.1rem;
-  box-shadow: 0 0 16px var(--primary);
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  font-size: 1.15rem;
+  box-shadow: 0 0 24px var(--primary);
+  border: 1.5px solid var(--glass-border);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, border 0.2s;
+  font-family: 'Exo', 'Orbitron', sans-serif;
 }
 .contact-btn:hover {
-  background: var(--accent);
+  background: var(--primary);
   color: #fff;
-  box-shadow: 0 0 32px var(--accent);
+  box-shadow: 0 0 48px var(--accent);
+  border: 1.5px solid var(--accent);
 }
 #contact-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  max-width: 400px;
+  gap: 1.2rem;
+  max-width: 420px;
   margin: 0 auto;
 }
 #contact-form input, #contact-form textarea {
-  padding: 0.8rem 1rem;
-  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
   border: none;
-  background: rgba(255,255,255,0.12);
+  background: rgba(30,30,60,0.22);
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.05rem;
   outline: none;
-  box-shadow: 0 0 8px #00ffe733;
+  box-shadow: 0 0 12px #00fff733;
   resize: none;
+  font-family: 'Exo', 'Orbitron', sans-serif;
 }
 #contact-form button {
-  padding: 0.8rem 2rem;
-  border-radius: 30px;
+  padding: 1rem 2.5rem;
+  border-radius: 40px;
   background: var(--accent);
   color: #fff;
   font-weight: bold;
   border: none;
-  font-size: 1.1rem;
-  box-shadow: 0 0 16px var(--accent);
+  font-size: 1.15rem;
+  box-shadow: 0 0 24px var(--accent);
   cursor: pointer;
   transition: background 0.2s, box-shadow 0.2s;
+  font-family: 'Orbitron', 'Exo', sans-serif;
 }
 #contact-form button:hover {
   background: var(--primary);
-  color: #0f0c29;
-  box-shadow: 0 0 32px var(--primary);
+  color: #0a0618;
+  box-shadow: 0 0 48px var(--primary);
 }
 
 footer {
   text-align: center;
-  padding: 2rem 0 1rem 0;
+  padding: 2.5rem 0 1.2rem 0;
   color: #aaa;
-  font-size: 1rem;
+  font-size: 1.05rem;
   background: transparent;
+  font-family: 'Exo', 'Orbitron', sans-serif;
 }
 
 /* Responsive */
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .services-cards, .projects-cards {
     flex-direction: column;
     align-items: center;
   }
   .navbar {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem;
+  }
+  #3d-model {
+    width: 320px;
+    height: 320px;
+  }
+}
+@media (max-width: 700px) {
+  .section {
+    padding: 4rem 0.5rem 2rem 0.5rem;
+  }
+  .navbar {
+    padding: 1rem 0.5rem;
+  }
+  .logo {
+    font-size: 1.3rem;
+  }
+  #3d-model {
+    width: 220px;
+    height: 220px;
   }
 } 
