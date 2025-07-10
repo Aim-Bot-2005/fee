@@ -102,6 +102,10 @@ services.forEach(s => {
 const projects = [
   { icon: '🎬', img: 'assets/sample-image.jpg' },
   { icon: '💻', video: 'assets/sample-video.mp4' },
+  { icon: '🖼️', img: 'assets/artworks/1751730728330.png' },
+  { icon: '🖼️', img: 'assets/artworks/1751730728355.png' },
+  { icon: '🖼️', img: 'assets/artworks/1751730728374.png' },
+  { icon: '🖼️', img: 'assets/artworks/1751730728389.png' },
   { icon: '🎬' },
   { icon: '🎬' },
   { icon: '✂️' },
