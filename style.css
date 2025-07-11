@@ -760,6 +760,9 @@ footer {
   .carousel-arrow {
     display: none !important;
   }
+  #back-to-top {
+    display: none !important;
+  }
 }
 @media (max-width: 800px) {
   .navbar {
@@ -951,4 +954,48 @@ a, button, .clickable {
 .neon-ring-cursor-active .futuristic-card,
 .neon-ring-cursor-active .futuristic-card * {
   cursor: none !important;
+} 
+
+/* Swipe indicator for mobile carousel */
+.projects-carousel .swipe-indicator {
+  display: none;
+}
+@media (max-width: 700px) {
+  .projects-carousel .swipe-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0 0.2rem 0;
+    width: 100%;
+    font-size: 2.2rem;
+    color: var(--primary);
+    opacity: 0.7;
+    animation: swipeArrow 1.2s infinite alternate;
+    pointer-events: none;
+    user-select: none;
+  }
+  @keyframes swipeArrow {
+    0% { transform: translateX(0); opacity: 0.7; }
+    100% { transform: translateX(18px); opacity: 1; }
+  }
+  .projects-carousel .carousel-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0 0.7rem 0;
+  }
+  .projects-carousel .carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0.3;
+    transition: opacity 0.2s, background 0.2s;
+    box-shadow: 0 0 8px var(--primary);
+  }
+  .projects-carousel .carousel-dot.active {
+    opacity: 1;
+    background: var(--accent);
+    box-shadow: 0 0 16px var(--accent);
+  }
 } 

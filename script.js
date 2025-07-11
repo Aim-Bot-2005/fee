@@ -409,4 +409,33 @@ window.addEventListener('DOMContentLoaded', addCardHoverEffect);
     ring.classList.remove('active');
   });
 })();
+
+// --- Pagination Dots for Projects Carousel (Mobile) ---
+(function() {
+  if (window.innerWidth > 700) return;
+  const track = document.querySelector('.projects-carousel-track');
+  const cards = track ? track.querySelectorAll('.futuristic-card') : [];
+  const pagination = document.querySelector('.carousel-pagination');
+  if (!track || !cards.length || !pagination) return;
+
+  // Create dots
+  pagination.innerHTML = '';
+  for (let i = 0; i < cards.length; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    pagination.appendChild(dot);
+  }
+  const dots = pagination.querySelectorAll('.carousel-dot');
+
+  // Update active dot on scroll
+  function updateActiveDot() {
+    const scrollLeft = track.scrollLeft;
+    const cardWidth = cards[0].offsetWidth;
+    const idx = Math.round(scrollLeft / (cardWidth + 16)); // 16px gap
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+  }
+  track.addEventListener('scroll', updateActiveDot);
+  // Also update on resize
+  window.addEventListener('resize', updateActiveDot);
+})();
 }); 
