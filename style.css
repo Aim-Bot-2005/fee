@@ -220,7 +220,7 @@ button:active, .contact-btn:active, .futuristic-card:active {
   color: var(--accent);
   margin-bottom: 2.5rem;
   letter-spacing: 2.5px;
-  font-family: 'Orbitron', 'Exo', sans-serif;
+  font-family: 'Audiowide', 'Orbitron', 'Exo', Arial, sans-serif;
   text-shadow: 0 0 18px var(--accent);
 }
 .services-cards, .projects-cards {
@@ -271,7 +271,7 @@ button:active, .contact-btn:active, .futuristic-card:active {
   font-size: 1.5rem;
   margin-bottom: 0.7rem;
   color: var(--accent);
-  font-family: 'Orbitron', 'Exo', sans-serif;
+  font-family: 'Exo 2', 'Exo', 'Orbitron', Arial, sans-serif;
 }
 .futuristic-card p {
   font-size: 1.05rem;
@@ -335,7 +335,10 @@ button:active, .contact-btn:active, .futuristic-card:active {
   outline: none;
   box-shadow: 0 0 12px #00fff733;
   resize: none;
-  font-family: 'Exo', 'Orbitron', sans-serif;
+  font-family: 'Exo 2', 'Exo', 'Orbitron', Arial, sans-serif;
+}
+#contact-form input::placeholder, #contact-form textarea::placeholder {
+  font-family: 'Exo 2', 'Exo', 'Orbitron', Arial, sans-serif;
 }
 #contact-form button {
   padding: 1rem 2.5rem;
