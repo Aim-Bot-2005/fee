@@ -369,4 +369,44 @@ function addCardHoverEffect() {
   }
 }
 window.addEventListener('DOMContentLoaded', addCardHoverEffect);
+
+// --- Neon Ring Cursor for Desktop/Laptop Users ---
+(function() {
+  const isDesktop = window.matchMedia('(pointer:fine)').matches && window.innerWidth > 700;
+  if (!isDesktop) return;
+
+  // Hide the default cursor
+  document.body.classList.add('neon-ring-cursor-active');
+
+  // Create the neon ring element
+  const ring = document.createElement('div');
+  ring.id = 'neon-cursor-ring';
+  document.body.appendChild(ring);
+
+  // Initial position
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  let ringX = mouseX, ringY = mouseY;
+
+  // Move ring smoothly
+  function animate() {
+    ringX = mouseX;
+    ringY = mouseY;
+    ring.style.transform = `translate3d(${ringX - 13}px, ${ringY - 13}px, 0)`;
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  document.addEventListener('mousemove', function(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  // Optional: shrink ring on click
+  document.addEventListener('mousedown', () => {
+    ring.classList.add('active');
+  });
+  document.addEventListener('mouseup', () => {
+    ring.classList.remove('active');
+  });
+})();
 }); 

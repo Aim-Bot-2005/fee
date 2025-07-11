@@ -918,3 +918,37 @@ h1::after, h2::after, h3::after {
   transform: scale(1.04);
   filter: drop-shadow(0 0 16px #00fff7) drop-shadow(0 0 4px #00aaff);
 } 
+
+a, button, .clickable {
+  cursor: pointer;
+} 
+
+.neon-ring-cursor-active {
+  cursor: none !important;
+}
+#neon-cursor-ring {
+  position: fixed;
+  left: 0; top: 0;
+  width: 26px; height: 26px;
+  border: 2.5px solid #00fff7;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  box-shadow: 0 0 16px 4px #00fff7, 0 0 32px 8px #00aaff;
+  background: rgba(0,255,247,0.07);
+  transition: box-shadow 0.18s, border-color 0.18s, transform 0.12s;
+  mix-blend-mode: lighten;
+}
+#neon-cursor-ring.active {
+  transform: scale(0.7);
+  box-shadow: 0 0 24px 8px #00fff7, 0 0 48px 12px #00aaff;
+  border-color: #00aaff;
+} 
+
+.neon-ring-cursor-active *,
+.neon-ring-cursor-active a,
+.neon-ring-cursor-active button,
+.neon-ring-cursor-active .futuristic-card,
+.neon-ring-cursor-active .futuristic-card * {
+  cursor: none !important;
+} 
