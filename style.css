@@ -278,6 +278,9 @@ button:active, .contact-btn:active, .futuristic-card:active {
   color: #fff;
   opacity: 0.88;
 }
+.futuristic-card h3::after {
+  display: none !important;
+}
 
 .contact-section {
   background: var(--glass);
@@ -855,4 +858,63 @@ body.mobile-performance .projects-carousel-track {
   box-shadow: 0 0 48px 8px var(--primary), 0 0 24px 4px var(--accent);
   font-family: 'Orbitron', 'Exo', sans-serif;
   letter-spacing: 2px;
+} 
+
+h1, h2, h3 {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+h1::after, h2::after, h3::after {
+  content: '';
+  display: block;
+  margin: 0.5rem auto 1.5rem auto;
+  width: 16%;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  box-shadow: 0 0 12px var(--primary), 0 0 8px var(--accent);
+} 
+
+.section h1, .section h2, .section h3 {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  left: unset;
+  transform: unset;
+}
+.services-section h2, .projects-section h2, .contact-section h2, .home-section h1 {
+  left: unset;
+  transform: unset;
+  text-align: center;
+  width: auto;
+} 
+
+.home-section h1::after {
+  display: none !important;
+} 
+
+.site-logo {
+  height: 2.2rem;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 0.7rem;
+  display: inline-block;
+} 
+
+.hero-logo-neon {
+  display: block;
+  margin: 0 auto 2.2rem auto;
+  height: 130px;
+  width: auto;
+  filter: drop-shadow(0 0 8px #00fff7) drop-shadow(0 0 2px #00aaff);
+  background: transparent;
+  border-radius: 12px;
+  box-shadow: none;
+  transition: transform 0.2s, filter 0.2s;
+}
+.hero-logo-neon:hover {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 16px #00fff7) drop-shadow(0 0 4px #00aaff);
 } 
