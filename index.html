@@ -8,7 +8,15 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
   <script defer src="script.js"></script>
   <!-- Three.js CDN for 3D models -->
-
+  <!-- Open Graph & Twitter Card Meta Tags -->
+  <meta property="og:title" content="Extoll.co - Futuristic Freelancing" />
+  <meta property="og:description" content="The Future of Freelancing is Here. Explore our services, projects, and contact us!" />
+  <meta property="og:image" content="/path/to/social-image.png" />
+  <meta property="og:url" content="https://extoll.co/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Extoll.co - Futuristic Freelancing" />
+  <meta name="twitter:description" content="The Future of Freelancing is Here. Explore our services, projects, and contact us!" />
+  <meta name="twitter:image" content="/path/to/social-image.png" />
 </head>
 <body>
   <div id="bg-grid"></div>
@@ -36,48 +44,52 @@
       </ul>
     </div>
   </div>
-  <section id="home" class="section home-section">
-    <div class="hero-content">
-      <h1>Welcome to Extoll.co</h1>
-      <p>The Future of Freelancing is Here</p>
-    </div>
-    <div id="bg-animation"></div>
-  </section>
-  <section id="services" class="section services-section">
-    <h2>Our Services</h2>
-    <div class="services-cards">
-      <!-- Cards will be added here by JS -->
-    </div>
-  </section>
-  <section id="projects" class="section projects-section">
-    <h2>Our Projects</h2>
-    <div class="projects-carousel">
-      <!-- Single carousel for all projects will be added by JS -->
-    </div>
-  </section>
-  <section id="contact" class="section contact-section">
-    <h2>Contact Us</h2>
-    <div class="contact-links">
-      <a href="https://chat.whatsapp.com/GieBKh7FHyqEglJEUFM9M3" target="_blank" class="contact-btn whatsapp">WhatsApp</a>
-      <a href="https://www.instagram.com/extoll.co/" target="_blank" class="contact-btn instagram">Instagram</a>
-      <a href="mailto:extoll.co.in@gmail.com" class="contact-btn email">Email</a>
-      <a href="tel:+919315158312" class="contact-btn call">Call</a>
-    </div>
-    <form id="contact-form"
-      action="https://docs.google.com/forms/d/e/1FAIpQLSfl7S5VkycOui72YuH09q0KEj9HC1nCNptelCgDmzTcCNpk7Q/formResponse"
-      method="POST"
-      target="hidden_iframe">
-      <input type="text" name="entry.297211147" placeholder="Your Name" required>
-      <input type="email" name="entry.998926052" placeholder="Your Email" required>
-      <input type="tel" name="entry.1053931599" placeholder="Your Phone Number" required>
-      <textarea name="entry.2072821308" placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-    <div id="contact-thankyou" style="display:none;"></div>
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-  </section>
+  <main>
+    <section id="home" class="section home-section">
+      <div class="hero-content">
+        <h1>Welcome to Extoll.co</h1>
+        <p>The Future of Freelancing is Here</p>
+      </div>
+      <div id="bg-animation"></div>
+    </section>
+    <section id="services" class="section services-section">
+      <h2>Our Services</h2>
+      <div class="services-cards">
+        <!-- Cards will be added here by JS -->
+      </div>
+    </section>
+    <section id="projects" class="section projects-section">
+      <h2>Our Projects</h2>
+      <div class="projects-carousel">
+        <!-- Single carousel for all projects will be added by JS -->
+      </div>
+    </section>
+    <section id="contact" class="section contact-section">
+      <h2>Contact Us</h2>
+      <div class="contact-links">
+        <a href="https://chat.whatsapp.com/GieBKh7FHyqEglJEUFM9M3" target="_blank" class="contact-btn whatsapp">WhatsApp</a>
+        <a href="https://www.instagram.com/extoll.co/" target="_blank" class="contact-btn instagram">Instagram</a>
+        <a href="mailto:extoll.co.in@gmail.com" class="contact-btn email">Email</a>
+        <a href="tel:+919315158312" class="contact-btn call">Call</a>
+      </div>
+      <form id="contact-form"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSfl7S5VkycOui72YuH09q0KEj9HC1nCNptelCgDmzTcCNpk7Q/formResponse"
+        method="POST"
+        target="hidden_iframe">
+        <input type="text" name="entry.297211147" placeholder="Your Name" required>
+        <input type="email" name="entry.998926052" placeholder="Your Email" required>
+        <input type="tel" name="entry.1053931599" placeholder="Your Phone Number" required>
+        <textarea name="entry.2072821308" placeholder="Your Message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+      <div id="contact-thankyou" style="display:none;"></div>
+      <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+    </section>
+  </main>
   <footer>
     <p>&copy; 2024 Extoll.co. All rights reserved.</p>
   </footer>
+  <button id="back-to-top" title="Back to Top">↑</button>
+  <div id="loading-overlay"><div class="spinner"></div></div>
 </body>
 </html> 

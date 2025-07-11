@@ -22,6 +22,75 @@ body {
   position: relative;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Back to Top Button */
+#back-to-top {
+  position: fixed;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 1002;
+  background: var(--primary);
+  color: #0a0618;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 0 24px var(--primary);
+  font-size: 2rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+#back-to-top:hover {
+  background: var(--accent);
+  box-shadow: 0 0 48px var(--accent);
+  transform: scale(1.1);
+}
+
+/* Micro-interactions for buttons and cards */
+button, .contact-btn, .futuristic-card {
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s, color 0.2s;
+}
+button:active, .contact-btn:active, .futuristic-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* Loading Spinner Overlay */
+#loading-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10, 6, 24, 0.85);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+#loading-overlay.active {
+  pointer-events: all;
+  opacity: 1;
+}
+.spinner {
+  border: 6px solid #222;
+  border-top: 6px solid var(--primary);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 #bg-animation, #bg-grid {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;

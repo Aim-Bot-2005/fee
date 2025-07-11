@@ -296,4 +296,77 @@ navOverlay.querySelectorAll('a').forEach(link => {
     navOverlay.classList.remove('active');
   });
 });
+
+// Back to Top Button logic
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 200) {
+    backToTop.style.display = 'flex';
+  } else {
+    backToTop.style.display = 'none';
+  }
+});
+if (backToTop) {
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Loading overlay for project media
+const loadingOverlay = document.getElementById('loading-overlay');
+function showLoading() {
+  if (loadingOverlay) loadingOverlay.classList.add('active');
+}
+function hideLoading() {
+  if (loadingOverlay) loadingOverlay.classList.remove('active');
+}
+function monitorProjectMediaLoading() {
+  const mediaEls = document.querySelectorAll('.project-media');
+  if (!mediaEls.length) return;
+  let loadedCount = 0;
+  showLoading();
+  mediaEls.forEach(el => {
+    if (el.tagName === 'IMG') {
+      if (el.complete) {
+        loadedCount++;
+        if (loadedCount === mediaEls.length) hideLoading();
+      } else {
+        el.addEventListener('load', () => {
+          loadedCount++;
+          if (loadedCount === mediaEls.length) hideLoading();
+        });
+        el.addEventListener('error', () => {
+          loadedCount++;
+          if (loadedCount === mediaEls.length) hideLoading();
+        });
+      }
+    } else if (el.tagName === 'VIDEO') {
+      el.addEventListener('loadeddata', () => {
+        loadedCount++;
+        if (loadedCount === mediaEls.length) hideLoading();
+      });
+      el.addEventListener('error', () => {
+        loadedCount++;
+        if (loadedCount === mediaEls.length) hideLoading();
+      });
+    }
+  });
+}
+window.addEventListener('DOMContentLoaded', monitorProjectMediaLoading);
+// If projects are dynamically loaded, call monitorProjectMediaLoading() after rendering.
+
+// Micro-interaction: scale up project card on hover (desktop only)
+function addCardHoverEffect() {
+  if (window.innerWidth > 700) {
+    document.querySelectorAll('.futuristic-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'scale(1.04)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+}
+window.addEventListener('DOMContentLoaded', addCardHoverEffect);
 }); 
