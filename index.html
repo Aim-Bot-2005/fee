@@ -66,13 +66,15 @@
     <form id="contact-form"
       action="https://docs.google.com/forms/d/e/1FAIpQLSfl7S5VkycOui72YuH09q0KEj9HC1nCNptelCgDmzTcCNpk7Q/formResponse"
       method="POST"
-      target="_blank">
+      target="hidden_iframe">
       <input type="text" name="entry.297211147" placeholder="Your Name" required>
       <input type="email" name="entry.998926052" placeholder="Your Email" required>
       <input type="tel" name="entry.1053931599" placeholder="Your Phone Number" required>
       <textarea name="entry.2072821308" placeholder="Your Message" required></textarea>
       <button type="submit">Send</button>
     </form>
+    <div id="contact-thankyou" style="display:none;"></div>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
   </section>
   <footer>
     <p>&copy; 2024 Extoll.co. All rights reserved.</p>

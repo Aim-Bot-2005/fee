@@ -266,6 +266,22 @@ function setupVideoLazyLoad() {
 setupVideoLazyLoad();
 
 // Contact Form (placeholder for Google Form integration)
+// Show thank you message after Google Form submission via hidden iframe
+const contactForm = document.getElementById('contact-form');
+const hiddenIframe = document.getElementById('hidden_iframe');
+const thankyouDiv = document.getElementById('contact-thankyou');
+if (contactForm && hiddenIframe && thankyouDiv) {
+  contactForm.addEventListener('submit', function() {
+    hiddenIframe.onload = function() {
+      contactForm.style.display = 'none';
+      thankyouDiv.style.display = 'block';
+      thankyouDiv.className = 'thankyou-message';
+      thankyouDiv.innerHTML = 'Thank you for contacting us. We have received your message!';
+      contactForm.reset();
+      hiddenIframe.onload = null;
+    };
+  });
+}
 // Hamburger menu logic
 const hamburger = document.getElementById('hamburger-menu');
 const navOverlay = document.getElementById('nav-menu-overlay');
