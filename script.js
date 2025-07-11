@@ -132,7 +132,6 @@ const services = [
   { icon: '💻', title: 'Web Development', desc: 'Next-gen websites, apps, and digital experiences.' },
   { icon: '🎨', title: 'UI/UX', desc: 'Immersive, user-centric interface and experience design.' },
   { icon: '🧊', title: '3D Modeling', desc: 'Hyper-realistic 3D models for any purpose.' },
-  { icon: '🚀', title: 'Other Projects', desc: 'Custom futuristic solutions for unique needs.' },
   { icon: '🖼️', title: 'Artwork', desc: 'Futuristic digital art, illustrations, and concept visuals.' }
 ];
 const servicesContainer = document.querySelector('.services-cards');
@@ -267,11 +266,6 @@ function setupVideoLazyLoad() {
 setupVideoLazyLoad();
 
 // Contact Form (placeholder for Google Form integration)
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  alert('Form submission will be connected to Google Forms soon!');
-});
-
 // Hamburger menu logic
 const hamburger = document.getElementById('hamburger-menu');
 const navOverlay = document.getElementById('nav-menu-overlay');
