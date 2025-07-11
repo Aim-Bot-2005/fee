@@ -68,6 +68,9 @@ function drawConstellation() {
   }
 }
 
+// --- Animate only when Home section is visible ---
+let constellationRunning = false;
+let constellationFrame = null;
 function animateConstellation() {
   for (let node of nodes) {
     node.x += node.dx;
@@ -76,9 +79,44 @@ function animateConstellation() {
     if (node.y < 0 || node.y > canvas.height) node.dy *= -1;
   }
   drawConstellation();
-  requestAnimationFrame(animateConstellation);
+  if (constellationRunning) {
+    constellationFrame = requestAnimationFrame(animateConstellation);
+  }
 }
-animateConstellation();
+
+function startConstellation() {
+  if (!constellationRunning) {
+    constellationRunning = true;
+    animateConstellation();
+  }
+}
+function stopConstellation() {
+  constellationRunning = false;
+  if (constellationFrame) {
+    cancelAnimationFrame(constellationFrame);
+    constellationFrame = null;
+  }
+}
+
+// IntersectionObserver for Home section
+const homeSection = document.querySelector('.home-section');
+const homeObserver = new window.IntersectionObserver(
+  (entries) => {
+    if (entries[0].isIntersecting) {
+      startConstellation();
+    } else {
+      stopConstellation();
+    }
+  },
+  { threshold: 0.15 }
+);
+homeObserver.observe(homeSection);
+// Start/stop on load
+if (window.scrollY < window.innerHeight) {
+  startConstellation();
+} else {
+  stopConstellation();
+}
 
 // Services Cards Data
 const services = [
@@ -130,10 +168,11 @@ if (!isMobile) {
     let media = '';
     let href = '';
     if (p.img) {
-      media = `<div class='media-container'><img src="${p.img}" alt="Project Image" class="project-media" /></div>`;
+      media = `<div class='media-container'><img src="${p.img}" alt="Project Image" class="project-media" loading="lazy" /></div>`;
       href = p.img;
     } else if (p.video) {
-      media = `<div class='media-container'><video src="${p.video}" class="project-media" autoplay loop muted playsinline></video></div>`;
+      // Lazy-load video: initially no src, set data-src
+      media = `<div class='media-container'><video data-src="${p.video}" class="project-media" autoplay loop muted playsinline preload="none"></video></div>`;
       href = p.video;
     }
     const card = document.createElement('div');
@@ -245,6 +284,33 @@ track.addEventListener('touchmove', (e) => {
 track.addEventListener('touchend', () => {
   isTouching = false;
 });
+
+// After all cards are added to the DOM, set up lazy-load for videos
+function setupVideoLazyLoad() {
+  const videos = document.querySelectorAll('video[data-src]');
+  if ('IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const video = entry.target;
+          if (!video.src) {
+            video.src = video.getAttribute('data-src');
+            video.load();
+          }
+          observer.unobserve(video);
+        }
+      });
+    }, { threshold: 0.2 });
+    videos.forEach(video => videoObserver.observe(video));
+  } else {
+    // Fallback: load all videos
+    videos.forEach(video => {
+      video.src = video.getAttribute('data-src');
+      video.load();
+    });
+  }
+}
+setupVideoLazyLoad();
 
 // Contact Form (placeholder for Google Form integration)
 document.getElementById('contact-form').addEventListener('submit', function(e) {
