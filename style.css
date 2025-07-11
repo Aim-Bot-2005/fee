@@ -132,7 +132,10 @@ button:active, .contact-btn:active, .futuristic-card:active {
   background: var(--holo);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  position: relative;
+  z-index: 2;
 }
+
 .nav-links {
   list-style: none;
   display: flex;
