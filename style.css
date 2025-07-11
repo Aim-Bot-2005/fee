@@ -307,7 +307,7 @@ button:active, .contact-btn:active, .futuristic-card:active {
   font-weight: bold;
   text-decoration: none;
   font-size: 1.15rem;
-  box-shadow: 0 0 24px var(--primary);
+  box-shadow: 0 0 10px var(--primary);
   border: 1.5px solid var(--glass-border);
   transition: background 0.2s, color 0.2s, box-shadow 0.2s, border 0.2s;
   font-family: 'Exo', 'Orbitron', sans-serif;
@@ -315,7 +315,7 @@ button:active, .contact-btn:active, .futuristic-card:active {
 .contact-btn:hover {
   background: var(--primary);
   color: #fff;
-  box-shadow: 0 0 48px var(--accent);
+  box-shadow: 0 0 18px var(--accent);
   border: 1.5px solid var(--accent);
 }
 #contact-form {
