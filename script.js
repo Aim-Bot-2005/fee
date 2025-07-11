@@ -1,4 +1,9 @@
 window.addEventListener('DOMContentLoaded', function() {
+// --- Mobile performance detection ---
+const isMobilePerf = window.innerWidth <= 700;
+if (isMobilePerf) {
+  document.body.classList.add('mobile-performance');
+}
 // Futuristic Constellation/Network Background
 const canvas = document.createElement('canvas');
 canvas.id = 'bg-canvas';
@@ -6,8 +11,8 @@ document.getElementById('bg-animation').appendChild(canvas);
 const ctx = canvas.getContext('2d');
 
 let nodes = [];
-const NODE_COUNT = 60;
-const MAX_DIST = 140;
+const NODE_COUNT = isMobilePerf ? 18 : 60;
+const MAX_DIST = isMobilePerf ? 0 : 140; // No lines on mobile
 const COLORS = ['#00fff7', '#00aaff', '#ffffff'];
 
 function resizeCanvas() {
@@ -34,23 +39,25 @@ createNodes();
 
 function drawConstellation() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // Draw lines between close nodes
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const a = nodes[i], b = nodes[j];
-      const dist = Math.hypot(a.x - b.x, a.y - b.y);
-      if (dist < MAX_DIST) {
-        const alpha = 1 - dist / MAX_DIST;
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(0,255,247,${alpha * 0.35})`;
-        ctx.shadowColor = '#00fff7';
-        ctx.shadowBlur = 8;
-        ctx.lineWidth = 1.2;
-        ctx.stroke();
-        ctx.restore();
+  // Draw lines between close nodes (skip on mobile)
+  if (!isMobilePerf) {
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        if (dist < MAX_DIST) {
+          const alpha = 1 - dist / MAX_DIST;
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgba(0,255,247,${alpha * 0.35})`;
+          ctx.shadowColor = '#00fff7';
+          ctx.shadowBlur = 8;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+          ctx.restore();
+        }
       }
     }
   }
@@ -61,7 +68,7 @@ function drawConstellation() {
     ctx.arc(node.x, node.y, node.r, 0, 2 * Math.PI);
     ctx.fillStyle = node.color;
     ctx.shadowColor = node.color;
-    ctx.shadowBlur = 18;
+    ctx.shadowBlur = isMobilePerf ? 0 : 18;
     ctx.globalAlpha = 0.85;
     ctx.fill();
     ctx.restore();
@@ -160,58 +167,43 @@ const isMobile = window.innerWidth <= 700;
 const track = document.createElement('div');
 track.className = 'projects-carousel-track';
 
+// Render all cards in order, no infinite loop, for all devices
+projects.forEach(p => {
+  let media = '';
+  let href = '';
+  // Use mobile-optimized images/videos if available
+  const imgSrc = isMobilePerf && p.imgMobile ? p.imgMobile : p.img;
+  const videoSrc = isMobilePerf && p.videoMobile ? p.videoMobile : p.video;
+  if (imgSrc) {
+    media = `<div class='media-container'><img src="${imgSrc}" alt="Project Image" class="project-media" loading="lazy" /></div>`;
+    href = imgSrc;
+  } else if (videoSrc) {
+    // Lazy-load video: initially no src, set data-src
+    media = `<div class='media-container'><video data-src="${videoSrc}" class="project-media" autoplay loop muted playsinline preload="none"></video></div>`;
+    href = videoSrc;
+  }
+  const card = document.createElement('div');
+  card.className = 'futuristic-card';
+  if (href) {
+    const link = document.createElement('a');
+    link.href = href;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.innerHTML = `${media}`;
+    card.appendChild(link);
+  } else {
+    card.innerHTML = `${media}`;
+  }
+  track.appendChild(card);
+});
+projectsCarousel.appendChild(track);
+
+// Add left/right arrow buttons for desktop/laptop only
 if (!isMobile) {
-  // Infinite loop: clone first and last N cards
-  const VISIBLE_CARDS = 3; // Number of cards visible at once (approx)
-  const total = projects.length;
-  function createCard(p) {
-    let media = '';
-    let href = '';
-    if (p.img) {
-      media = `<div class='media-container'><img src="${p.img}" alt="Project Image" class="project-media" loading="lazy" /></div>`;
-      href = p.img;
-    } else if (p.video) {
-      // Lazy-load video: initially no src, set data-src
-      media = `<div class='media-container'><video data-src="${p.video}" class="project-media" autoplay loop muted playsinline preload="none"></video></div>`;
-      href = p.video;
-    }
-    const card = document.createElement('div');
-    card.className = 'futuristic-card';
-    if (href) {
-      const link = document.createElement('a');
-      link.href = href;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.innerHTML = `${media}`;
-      card.appendChild(link);
-    } else {
-      card.innerHTML = `${media}`;
-    }
-    return card;
-  }
-  // Clone last N cards to the start
-  for (let i = total - VISIBLE_CARDS; i < total; i++) {
-    track.appendChild(createCard(projects[i]));
-  }
-  // Add all real cards
-  projects.forEach(p => {
-    track.appendChild(createCard(p));
-  });
-  // Clone first N cards to the end
-  for (let i = 0; i < VISIBLE_CARDS; i++) {
-    track.appendChild(createCard(projects[i]));
-  }
-  projectsCarousel.appendChild(track);
-  // Set initial scroll position to the first real card
   function getCardWidth() {
     const card = track.querySelector('.futuristic-card');
     return card ? card.offsetWidth + 32 : 320; // 32px gap
   }
-  function setInitialScroll() {
-    track.scrollLeft = getCardWidth() * VISIBLE_CARDS;
-  }
-  setTimeout(setInitialScroll, 50);
-  // Arrows
   const left = document.createElement('button');
   left.className = 'carousel-arrow left';
   left.innerHTML = '&#8592;';
@@ -226,46 +218,8 @@ if (!isMobile) {
   };
   projectsCarousel.appendChild(left);
   projectsCarousel.appendChild(right);
-  // Infinite loop scroll logic
-  track.addEventListener('scroll', () => {
-    const cardW = getCardWidth();
-    if (track.scrollLeft <= cardW * 0.5) {
-      // Jump to end
-      track.scrollLeft = cardW * (total + VISIBLE_CARDS - 0.5);
-    } else if (track.scrollLeft >= cardW * (total + VISIBLE_CARDS - 0.5)) {
-      // Jump to start
-      track.scrollLeft = cardW * VISIBLE_CARDS + 1;
-    }
-  });
-  window.addEventListener('resize', setInitialScroll);
-} else {
-  // Mobile: No infinite loop, just render cards in order
-  projects.forEach(p => {
-    let media = '';
-    let href = '';
-    if (p.img) {
-      media = `<div class='media-container'><img src="${p.img}" alt="Project Image" class="project-media" /></div>`;
-      href = p.img;
-    } else if (p.video) {
-      media = `<div class='media-container'><video src="${p.video}" class="project-media" autoplay loop muted playsinline></video></div>`;
-      href = p.video;
-    }
-    const card = document.createElement('div');
-    card.className = 'futuristic-card';
-    if (href) {
-      const link = document.createElement('a');
-      link.href = href;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.innerHTML = `${media}`;
-      card.appendChild(link);
-    } else {
-      card.innerHTML = `${media}`;
-    }
-    track.appendChild(card);
-  });
-  projectsCarousel.appendChild(track);
 }
+// Remove arrows and scroll event logic
 
 // Touch swipe support for carousel
 let startX = 0;

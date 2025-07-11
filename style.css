@@ -741,3 +741,34 @@ footer {
     font-size: 0.9rem;
   }
 } 
+
+/* Mobile performance mode: reduce heavy effects on mobile only */
+body.mobile-performance .futuristic-card,
+body.mobile-performance .services-section,
+body.mobile-performance .projects-section,
+body.mobile-performance .contact-section {
+  box-shadow: none !important;
+  border: 1.5px solid var(--glass-border) !important;
+  backdrop-filter: none !important;
+  background: rgba(20, 20, 40, 0.92) !important;
+  animation: none !important;
+}
+body.mobile-performance .futuristic-card {
+  border-radius: 18px !important;
+  border-image: none !important;
+  border-width: 1.5px !important;
+}
+body.mobile-performance .futuristic-card .icon {
+  text-shadow: none !important;
+  filter: none !important;
+}
+body.mobile-performance .navbar,
+body.mobile-performance .contact-btn {
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+body.mobile-performance .projects-carousel,
+body.mobile-performance .projects-carousel-track {
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+} 
