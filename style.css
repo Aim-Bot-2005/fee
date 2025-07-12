@@ -1005,3 +1005,20 @@ a, button, .clickable {
     box-shadow: 0 0 16px var(--accent);
   }
 } 
+
+.nav-logo-img {
+  display: inline-block;
+  height: 48px;
+  width: auto;
+  margin-right: 0.7rem;
+  filter: drop-shadow(0 0 8px #00fff7) drop-shadow(0 0 2px #00aaff);
+  background: transparent;
+  border-radius: 12px;
+  box-shadow: none;
+  transition: transform 0.2s, filter 0.2s;
+  vertical-align: middle;
+}
+.nav-logo-img:hover {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 16px #00fff7) drop-shadow(0 0 4px #00aaff);
+} 
